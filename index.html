@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Course Subjects</title>
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Course Subjects</h1>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for a subject...">
+        </div>
+        
+        <div id="error-message" class="error-message">
+            Error loading courses: Network response was not ok
+        </div>
+        
+        <div class="card">
+            <table id="coursesTable">
+                <thead>
+                    <tr>
+                        <th>YEAR TERM</th>
+                        <th>SUBJECT CODE</th>
+                        <th>DESCRIPTIVE TITLE</th>
+                        <th>CREDIT</th>
+                    </tr>
+                </thead>
+                <tbody id="coursesTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        const courseData = [
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "IT111", descriptiveTitle: "Introduction to Computing", credit: 3 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "IT112", descriptiveTitle: "Computer Programming 1", credit: 3 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "PurCom", descriptiveTitle: "Purposive Communication", credit: 3 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "RPH", descriptiveTitle: "Readings in Philippine History", credit: 3 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "TCW", descriptiveTitle: "The Contemporary World", credit: 3 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "MMW", descriptiveTitle: "Mathematics in the Modern World", credit: 3 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "PATH_FIT_1", descriptiveTitle: "Movement Enhancement", credit: 2 },
+            { yearTerm: "1st Year - 1st Semester", subjectCode: "NSTP101", descriptiveTitle: "CWTS I", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "IT121", descriptiveTitle: "Computer Programming 2", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "IT122", descriptiveTitle: "Data Structures and Algorithms", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "IT123", descriptiveTitle: "Discrete Mathematics", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "ArtApp", descriptiveTitle: "Art Appreciation", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "UTS", descriptiveTitle: "Understanding the Self", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "PATH_FIT_2", descriptiveTitle: "Fitness Activity and Exercises", credit: 2 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "NSTP102", descriptiveTitle: "CWTS II", credit: 3 },
+            { yearTerm: "1st Year - 2nd Semester", subjectCode: "STS", descriptiveTitle: "Science, Technology and Society", credit: 3 },
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "IT211", descriptiveTitle: "Intro to Human Computer Interaction", credit: 3 },
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "IT212", descriptiveTitle: "Fundamentals of Database Systems", credit: 3}, 
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "IT213", descriptiveTitle: "Platform Technologies", credit: 3},
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "IT214", descriptiveTitle: "Object Oriented Programming", credit: 3},
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "IT215", descriptiveTitle: "Accounting Principles", credit: 3},
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "PATH_FIT_3", descriptiveTitle: "Physical Activity Towards Health and Fitness", credit: 2},
+            { yearTerm: "2nd Year - 1st semester", subjectCode: "EnviSci", descriptiveTitle: "Environmental Science", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "IT221", descriptiveTitle: "Information Management", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "IT222", descriptiveTitle: "Networking 1", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "IT223", descriptiveTitle: "Web Systems and Technologies", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "IT224", descriptiveTitle: "Systems Integration and Architecture", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "Ethics", descriptiveTitle: "Ethics", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "Rizal", descriptiveTitle: "Life and Works of Rizal", credit: 3},
+            { yearTerm: "2nd Year - 2nd semester", subjectCode: "PATH_FIT_4", descriptiveTitle: "Physical Activity Towards Health and Fitness 2", credit: 2}
+        ];
+
+        function loadCourses() {
+            try {
+                displayCourses(courseData);
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+        function displayCourses(courses) {
+            const tableBody = document.getElementById('coursesTableBody');
+            tableBody.innerHTML = '';
+            
+            courses.forEach(course => {
+                const row = document.createElement('tr');
+                
+                const yearTermCell = document.createElement('td');
+                yearTermCell.className = 'year-term';
+                
+                const yearTermText = document.createElement('span');
+                yearTermText.textContent = course.yearTerm.split('-')[0].trim();
+                yearTermCell.appendChild(yearTermText);
+                
+                const semesterBadge = document.createElement('span');
+                if (course.yearTerm.includes('1st Semester')) {
+                    semesterBadge.className = 'semester-badge first-sem';
+                    semesterBadge.textContent = '1st Sem';
+                } else {
+                    semesterBadge.className = 'semester-badge second-sem';
+                    semesterBadge.textContent = '2nd Sem';
+                }
+                yearTermCell.appendChild(semesterBadge);
+                row.appendChild(yearTermCell);
+                
+                const subjectCodeCell = document.createElement('td');
+                subjectCodeCell.className = 'subject-code';
+                subjectCodeCell.textContent = course.subjectCode;
+                row.appendChild(subjectCodeCell);
+                
+                const descriptiveTitleCell = document.createElement('td');
+                descriptiveTitleCell.textContent = course.descriptiveTitle;
+                row.appendChild(descriptiveTitleCell);
+                
+                const creditCell = document.createElement('td');
+                creditCell.className = 'credit-cell';
+                creditCell.textContent = course.credit;
+                row.appendChild(creditCell);
+                
+                tableBody.appendChild(row);
+            });
+            
+            document.getElementById('error-message').style.display = 'none';
+            document.getElementById('coursesTable').style.display = 'table';
+        }
+        function showError(message) {
+            const errorElement = document.getElementById('error-message');
+            errorElement.textContent = message || 'Error loading courses: Network response was not ok';
+            errorElement.style.display = 'block';
+        }
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredCourses = courseData.filter(course => 
+                course.subjectCode.toLowerCase().includes(searchTerm) || 
+                course.descriptiveTitle.toLowerCase().includes(searchTerm) ||
+                course.yearTerm.toLowerCase().includes(searchTerm)
+            );
+            
+            displayCourses(filteredCourses);
+        });
+
+        window.addEventListener('load', loadCourses);
+    </script>
+</body>
+</html>
